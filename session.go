@@ -70,7 +70,7 @@ func (s *session) getOrCreateReadStream(ssrc uint32, child streamSession, proto 
 		return nil, false
 	}
 
-	// child may be SessionSRTP which has reference to s,
+	// child (SessionSRTP/SessionSRTCP) has reference to s,
 	// and r has reference to child; circular reference r->child->s->r should be broken on removeReadStream.
 	s.readStreams[ssrc] = r
 	return r, true
