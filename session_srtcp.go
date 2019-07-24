@@ -86,6 +86,7 @@ func (s *SessionSRTCP) AcceptStream() (*ReadStreamSRTCP, uint32, error) {
 
 // Close ends the session
 func (s *SessionSRTCP) Close() error {
+	s.writeStream = nil
 	return s.session.close()
 }
 
