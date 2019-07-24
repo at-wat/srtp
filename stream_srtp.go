@@ -105,7 +105,6 @@ func (r *ReadStreamSRTP) Close() error {
 		}
 
 		r.session.removeReadStream(r.ssrc)
-		r.session = nil
 		return nil
 	}
 
