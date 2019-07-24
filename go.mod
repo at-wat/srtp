@@ -1,4 +1,4 @@
-module github.com/pion/srtp
+module github.com/at-wat/srtp
 
 go 1.12
 
