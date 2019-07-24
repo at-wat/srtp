@@ -80,6 +80,7 @@ func (r *ReadStreamSRTCP) Close() error {
 		}
 
 		r.session.removeReadStream(r.ssrc)
+		r.session = nil
 		return nil
 	}
 }
