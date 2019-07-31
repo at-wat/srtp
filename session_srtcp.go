@@ -55,6 +55,9 @@ func NewSessionSRTCP(conn net.Conn, config *Config) (*SessionSRTCP, error) {
 
 // OpenWriteStream returns the global write stream for the Session
 func (s *SessionSRTCP) OpenWriteStream() (*WriteStreamSRTCP, error) {
+	if s.writeStream == nil {
+		return nil, fmt.Errorf("SessionSRTP has been closed")
+	}
 	return s.writeStream, nil
 }
 
@@ -86,6 +89,7 @@ func (s *SessionSRTCP) AcceptStream() (*ReadStreamSRTCP, uint32, error) {
 
 // Close ends the session
 func (s *SessionSRTCP) Close() error {
+	s.writeStream = nil
 	return s.session.close()
 }
 

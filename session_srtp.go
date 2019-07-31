@@ -61,6 +61,9 @@ func (s *SessionSRTP) Start(localMasterKey, localMasterSalt, remoteMasterKey, re
 
 // OpenWriteStream returns the global write stream for the Session
 func (s *SessionSRTP) OpenWriteStream() (*WriteStreamSRTP, error) {
+	if s.writeStream == nil {
+		return nil, fmt.Errorf("SessionSRTP has been closed")
+	}
 	return s.writeStream, nil
 }
 
@@ -93,6 +96,7 @@ func (s *SessionSRTP) AcceptStream() (*ReadStreamSRTP, uint32, error) {
 
 // Close ends the session
 func (s *SessionSRTP) Close() error {
+	s.writeStream = nil
 	return s.session.close()
 }
 

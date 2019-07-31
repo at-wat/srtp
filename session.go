@@ -70,6 +70,7 @@ func (s *session) getOrCreateReadStream(ssrc uint32, child streamSession, proto 
 		return nil, false
 	}
 
+	// This makes circular reference r->child->s->r which should be cleared on removeReadStream.
 	s.readStreams[ssrc] = r
 	return r, true
 }
@@ -78,11 +79,9 @@ func (s *session) removeReadStream(ssrc uint32) {
 	s.readStreamsLock.Lock()
 	defer s.readStreamsLock.Unlock()
 
-	if s.readStreamsClosed {
-		return
+	if _, ok := s.readStreams[ssrc]; ok {
+		delete(s.readStreams, ssrc)
 	}
-
-	delete(s.readStreams, ssrc)
 }
 
 func (s *session) close() error {
